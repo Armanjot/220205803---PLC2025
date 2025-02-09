@@ -86,7 +86,7 @@ public class Overflow
         for ( int j = 1; j <= m; j++ )
         {
             ns = ns * n;
-//             assert ?? : "Floating-point overflow";
+             assert ns != ns*3 : "Floating-point overflow";         //Infinity = overflow, so infinity*3 = infinity
             resultList.add(ns);
         }
         return resultList;
@@ -112,7 +112,7 @@ public class Overflow
         for ( int j = 0; j <= m; j++ )
         {
             ns_inv = ns_inv / n; // update from 1/n^(i-1) to 1/n^i
-//             assert ?? : "Floating point underflow";
+             assert ns_inv != 0 : "Floating point underflow";       //Should be a really small number but not 0 
             geom_sum = ns_inv + geom_sum;
             resultList.add(geom_sum);
         }
