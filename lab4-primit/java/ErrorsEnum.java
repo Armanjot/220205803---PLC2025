@@ -9,17 +9,17 @@ public class ErrorsEnum
     
     private static <E extends Enum<E>> E getEnumElement(String elementTypeName, Class<E> elementType)
     {
-        boolean haveResult = false;
+        boolean haveError = false;
         E result = null;
         Scanner stdin = new Scanner(System.in);
         
-        while ( ! haveResult )
+        while ( ! haveError )
         {
             System.out.print("Input " + elementTypeName + ": ");
             try
             {
-                result = Enum.valueOf(elementType, stdin.next().toUpperCase());
-                haveResult = true;
+                error = Enum.valueOf(elementType, stdin.next().toUpperCase());
+                haveError = true;
             }
             catch (IllegalArgumentException e)
             {
@@ -54,16 +54,38 @@ public class ErrorsEnum
         return result;
     }
 
+    private static Error result2Error(Result s)
+    {
+        Error error = null;
+        
+        switch (s) {
+        case A_BIT_DIFFERENT:
+            error = error.FP_ROUNDING;
+            break;
+        case INFINITY:
+            error = error.FP_OVERFLOW;
+            break;
+        case ZERO:
+            error = error.FP_UNDERFLOW;
+            break;
+        case VERY_DIFFERENT:
+            error = error.INT_OVERFLOW;
+            break;
+        }
+        
+        return error;
+    }
+
     public static void main(String[] args)
     {
-        System.out.print("Known errors = ");
-        for (Error e : EnumSet.allOf(Error.class)) 
+        System.out.print("Known results = ");
+        for (Result s : EnumSet.allOf(Result.class)) 
         {
-            System.out.print(e + " ");
+            System.out.print(s + " ");
         }
         System.out.println();
         
-        Error e = getEnumElement("error", Error.class);
-        System.out.println(e + " results in: " + error2Result(e));
+        Result s = getEnumElement("Result", Result.class);
+        System.out.println(s + " Errors in: " + result2Error(s));
     }
 }
